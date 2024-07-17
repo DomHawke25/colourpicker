@@ -1,0 +1,60 @@
+/*===== Formatting for Header =====*/
+
+.header {
+    margin: 0;
+    padding: 0 5px 0 0;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.header li {
+    list-style: none;
+}
+
+.header a {
+    text-decoration: none;
+    margin: 10px 5px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header a:link, header a:visited {
+    color: black;
+}
+
+.header a:active {
+    transform: scale(0.9, 0.9);
+}
+
+.headerIcon {
+    width: 50px;
+    margin: 10px 5px;
+}
+
+.headerIcon:active {
+    transform: scale(0.9, 0.9);
+}
+
+.headerIcon img {
+    width: 100%;
+    max-width: 100%;
+}
+
+.back {
+    width: 40px;
+    margin-right: auto;
+}
+
+@media screen and (min-width: 801px) {
+    /* Hover effect for Desktop site only */
+    .header a:hover {
+        text-shadow: 2px 2px 5px grey;
+        transform: translate(-2px, -2px);
+    }
+
+    .headerIcon:hover {
+        transform: translate(-2px, -2px);
+    }
+}

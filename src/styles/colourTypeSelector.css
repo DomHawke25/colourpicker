@@ -1,0 +1,44 @@
+/*===== Formatting for Colour Type Selector =====*/
+
+.colourTypeSelector {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.colourType {
+    width: 160px;
+    height: 70px;
+    margin: 5px;
+    background: rgba( 255, 255, 255, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.colourTypeHeader {
+    text-align: center;
+    font-weight: 600;
+    flex-grow: 1;
+    margin: 10px;
+}
+
+.colourCode {
+    text-align: center;
+    margin: 8px;
+}
+
+.activeColourType {
+    background: rgba( 144, 19, 254, 0.25 );
+}
+
+.copyButton {
+    height: 28px;
+    width: 28px;
+    position: absolute;
+    margin: 5px;
+    left: calc(100% - 38px);
+}

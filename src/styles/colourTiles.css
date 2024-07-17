@@ -1,0 +1,36 @@
+/*===== Formating for Tiles =====*/
+
+.colourTiles {
+    display: flex;
+    justify-content: center;
+}
+
+.tile {
+    background-color: lightblue;
+    height: 250px;
+    width: 150px;
+    margin: 10px;
+    border: solid 2px black;
+    border-radius: 25px;
+}
+
+.addTile {
+    border-style: dashed;
+}
+
+.activeTile {
+    box-shadow: 10px 10px grey;
+}
+
+.binButton {
+    float: right;
+    border-radius: 50%;
+    margin: 5px;
+    background: rgba( 255, 255, 255, 0.3 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.binButton:hover {
+    background: rgba( 255, 255, 255, 0.8 );
+}
