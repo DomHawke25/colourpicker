@@ -45,7 +45,7 @@ function Header() {
     return (
         <ul className='header'>
             {createIcon('back')}
-            <li><a href="" title='View Code'>View Code</a></li>
+            <li><a href="https://github.com/DomHawke25/colourpicker" title='View Code'>View Code</a></li>
             {createIcon('github')}
             {createIcon('codepen')}
             {createIcon('linkedIn')}

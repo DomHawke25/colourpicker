@@ -1,0 +1,7 @@
+/*===== Formatting for Sliders =====*/
+
+.colourSliders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
