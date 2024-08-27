@@ -32,14 +32,11 @@ function convertRGBtoHSL(RGBcode) {
 
     if (diff === 0) { // If Min and Max are the same
         hue = 0;
-    }
-    if (max === red) {
+    } else if (max === red) {
         hue = ((green - blue) / diff) % 6;
-    }
-    if (max === green) {
+    } else if (max === green) {
         hue = (blue - red) / diff + 2;
-    }
-    if (max === blue) {
+    } else if (max === blue) {
         hue = (red - green) / diff + 4;
     }
     

@@ -104,7 +104,10 @@ function App() {
       />
       <ColourSliders
         colourList={colourList}
+        setColourList={setColourList}
         activeTile={activeTile}
+        activeColourType={activeColourType}
+        currentHSL={currentHSL}
       />
     </>
   );
