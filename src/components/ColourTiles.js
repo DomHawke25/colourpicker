@@ -33,6 +33,7 @@ function ColourTiles({colourList, addColourTile, deleteColourTile, activeTile, s
         return null;
     }
 
+    // JSX Returned
     return (
         <section className='colourTiles'>
             {colourList.map((colour, index) => {

@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import ColourTiles from './components/ColourTiles';
 import ColourTypeSelector from "./components/ColourTypeSelector";
 import ColourSliders from "./components/ColourSliders";
-import { convertRGBtoHEX, convertHEXtoRGB, convertRGBtoHSL, convertHSLtoRGB } from "./components/converters";
+import { convertRGBtoHEX, convertRGBtoHSL, convertHSLtoRGB } from "./components/converters";
 import './App.css';
 
 // Generates random colour for intialization of each colour tile
@@ -16,41 +16,28 @@ const randomColour = () => {
 }
 
 function App() {
+  // Initialization of useStates needed for app
   const [colourList, setColourList] = useState([randomColour()]);
   const [activeTile, setActiveTile] = useState(0);
   const [activeColourType, setActiveColourType] = useState("RGB");
   const [currentHEX, setCurrentHEX] = useState(convertRGBtoHEX(colourList[activeTile]));
   const [currentHSL, setCurrentHSL] = useState(convertRGBtoHSL(colourList[activeTile]));
 
-  /*
-  If the last tile is active when a tile is deleted, aka the activeTile number is greater than the total number of tiles,
-  the following useEffect will set the activeTile to the new last tile.
-  */
 
   useEffect(() => {
+    /* If the last tile is active when a tile is deleted, aka the activeTile number is greater than the total number of tiles,
+    the following will set the activeTile to the new last tile. */
     if (activeTile > colourList.length - 1) {
       setActiveTile(colourList.length - 1);
     }
-
-    setCurrentHEX(convertRGBtoHEX(colourList[activeTile]));
-    setCurrentHSL(convertRGBtoHSL(colourList[activeTile]));
   }, [colourList, activeTile]);
 
-  /*
-    The following functions are for the colourTiles and associated useState's.
 
-    addColourTile --> adds a new tile to the useState array, initializing the new tile with a random colour.
-    
-    deleteColourTile --> removes the selected tile from the useState array by filtering out the selected tile.
-    the if statement keeps the currently selected tile selected when deleting tiles.
-    
-    setTileToActive --> Sets the useState to the tile selected.
-    the if statement checkes that the ID passed is for a tile, and not the delete button,
-    as using 'pointer-events: none' in the css code, means this onClick event is also run when deleting a tile.
-  */
+  // Functions below are used for updating the useState's
 
   const addColourTile = () => {
     if (colourList.length < 4) {
+      // As long as there are less than 4 tiles, add new tile initialized with random colour.
       setColourList([...colourList, randomColour()]);
     }
   }
@@ -61,6 +48,7 @@ function App() {
       setColourList(colourList.filter((colourTile, index) => index !== tileId));
  
       if (tileId <= activeTile && activeTile !== 0) {
+        // Keep the currently selected tile selected when deleting tiles
         setActiveTile(activeTile - 1);
       }
     }
@@ -68,13 +56,14 @@ function App() {
 
   const setTileToActive = (event) => {
     if (event.target.id.includes("Tile")) {
+      /* If statement checkes that the ID passed is for a tile, and not the delete button,
+      as using 'pointer-events: none' in the css code, means this onClick event is also run when deleting a tile. */
       const selectedTileId = parseInt(event.target.id.slice(-1));
       setActiveTile(selectedTileId);
+      setCurrentHEX(convertRGBtoHEX(colourList[selectedTileId]));
+      setCurrentHSL(convertRGBtoHSL(colourList[selectedTileId]));
     }
   }
-
-  /*
-  */
 
   const setColourTypeToActive = (event) => {
     const availableTypes = ['RGB', 'HSL', 'HEX'];
@@ -83,7 +72,46 @@ function App() {
     }
   }
 
-  // JSX HTML Returned
+  const updateRGBvalue = (newRGB, updateOtherValues) => {
+    const {red, green, blue} = newRGB;
+    if (red >= 0 && red <= 255 && green >= 0 && green <= 255 && blue >= 0 && blue <= 255) {
+      setColourList(colourList.map((colour, index) => {
+        if (index === activeTile) {
+            return newRGB;
+        }
+        return colour;
+      }));
+      
+      if (updateOtherValues) {
+        updateHSLvalue(convertRGBtoHSL(newRGB), false);
+        updateHEXvalue(convertRGBtoHEX(newRGB), false);
+      }
+    }
+  }
+
+  const updateHSLvalue = (newHSL, updateOtherValues) => {
+    const {hue, saturation, lightness} = newHSL;
+    if (hue >= 0 && hue <= 360 && saturation >= 0 && saturation <= 100 && lightness >= 0 && lightness <= 100) {
+      setCurrentHSL(newHSL);
+
+      if (updateOtherValues) {
+        updateRGBvalue(convertHSLtoRGB(newHSL), false);
+        updateHEXvalue(convertRGBtoHEX(convertHSLtoRGB(newHSL)), false);
+      }
+    }
+  }
+
+  const updateHEXvalue = (newHEX, updateOtherValues) => {
+    let reg = /^#([0-9a-f]{3}){1,2}$/i;
+    if (reg.test(newHEX)) {
+      setCurrentHEX(newHEX);
+
+      if (updateOtherValues) {}
+    }
+  }
+
+
+  // JSX Returned
   return (
     <>
       <Header />
@@ -103,11 +131,12 @@ function App() {
         currentHSL={currentHSL}
       />
       <ColourSliders
-        colourList={colourList}
-        setColourList={setColourList}
-        activeTile={activeTile}
         activeColourType={activeColourType}
+        currentRGB={colourList[activeTile]}
         currentHSL={currentHSL}
+        updateRGBvalue={updateRGBvalue}
+        updateHSLvalue={updateHSLvalue}
+        updateHEXvalue={updateHEXvalue}
       />
     </>
   );
