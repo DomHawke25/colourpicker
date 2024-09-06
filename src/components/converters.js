@@ -99,6 +99,11 @@ function convertHSLtoRGB(HSLcode) {
             green = 0;
             blue = x;
             break;
+        case 6:
+            red = chroma;
+            green = 0;
+            blue = x;
+            break;
         default:
             red = 0;
             green = 0;

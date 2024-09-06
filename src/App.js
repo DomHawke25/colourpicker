@@ -42,9 +42,8 @@ function App() {
     }
   }
 
-  const deleteColourTile = (event) => {
+  const deleteColourTile = (tileId) => {
     if (colourList.length > 1) {
-      const tileId = parseInt(event.target.id.slice(-1));
       setColourList(colourList.filter((colourTile, index) => index !== tileId));
  
       if (tileId <= activeTile && activeTile !== 0) {
@@ -54,21 +53,16 @@ function App() {
     }
   }
 
-  const setTileToActive = (event) => {
-    if (event.target.id.includes("Tile")) {
-      /* If statement checkes that the ID passed is for a tile, and not the delete button,
-      as using 'pointer-events: none' in the css code, means this onClick event is also run when deleting a tile. */
-      const selectedTileId = parseInt(event.target.id.slice(-1));
-      setActiveTile(selectedTileId);
-      setCurrentHEX(convertRGBtoHEX(colourList[selectedTileId]));
-      setCurrentHSL(convertRGBtoHSL(colourList[selectedTileId]));
-    }
+  const setTileToActive = (selectedTileId) => {
+    setActiveTile(selectedTileId);
+    setCurrentHEX(convertRGBtoHEX(colourList[selectedTileId]));
+    setCurrentHSL(convertRGBtoHSL(colourList[selectedTileId]));
   }
 
-  const setColourTypeToActive = (event) => {
+  const setColourTypeToActive = (newColourType) => {
     const availableTypes = ['RGB', 'HSL', 'HEX'];
-    if (availableTypes.includes(event.target.id)) {
-      setActiveColourType(event.target.id);
+    if (availableTypes.includes(newColourType)) {
+      setActiveColourType(newColourType);
     }
   }
 
@@ -117,18 +111,17 @@ function App() {
       <Header />
       <ColourTiles
         colourList={colourList}
+        activeTile={activeTile}
         addColourTile={addColourTile}
         deleteColourTile={deleteColourTile}
-        activeTile={activeTile}
         setTileToActive={setTileToActive}
       />
       <ColourTypeSelector
-        colourList={colourList}
-        activeTile={activeTile}
+        currentRGB={colourList[activeTile]}
+        currentHSL={currentHSL}
+        currentHEX={currentHEX}
         activeColourType={activeColourType}
         setColourTypeToActive={setColourTypeToActive}
-        currentHEX={currentHEX}
-        currentHSL={currentHSL}
       />
       <ColourSliders
         activeColourType={activeColourType}
