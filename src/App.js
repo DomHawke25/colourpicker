@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Header from "./components/Header";
 import ColourTiles from './components/ColourTiles';
 import ColourTypeSelector from "./components/ColourTypeSelector";
 import ColourSliders from "./components/ColourSliders";
-import { convertRGBtoHEX, convertRGBtoHSL, convertHSLtoRGB } from "./components/converters";
+import { convertRGBtoHEX, convertHEXtoRGB, convertRGBtoHSL, convertHSLtoRGB } from "./components/converters";
 import './App.css';
 
 // Generates random colour for intialization of each colour tile
@@ -23,18 +23,6 @@ function App() {
   const [currentHEX, setCurrentHEX] = useState(convertRGBtoHEX(colourList[activeTile]));
   const [currentHSL, setCurrentHSL] = useState(convertRGBtoHSL(colourList[activeTile]));
 
-
-  useEffect(() => {
-    /* If the last tile is active when a tile is deleted, aka the activeTile number is greater than the total number of tiles,
-    the following will set the activeTile to the new last tile. */
-    if (activeTile > colourList.length - 1) {
-      setActiveTile(colourList.length - 1);
-    }
-  }, [colourList, activeTile]);
-
-
-  // Functions below are used for updating the useState's
-
   const addColourTile = () => {
     if (colourList.length < 4) {
       // As long as there are less than 4 tiles, add new tile initialized with random colour.
@@ -45,11 +33,20 @@ function App() {
   const deleteColourTile = (tileId) => {
     if (colourList.length > 1) {
       setColourList(colourList.filter((colourTile, index) => index !== tileId));
- 
-      if (tileId <= activeTile && activeTile !== 0) {
-        // Keep the currently selected tile selected when deleting tiles
-        setActiveTile(activeTile - 1);
+      
+      const updateHSLandHEXonDelete = (newActiveTile, colourToUse) => {
+        setActiveTile(newActiveTile);
+        updateHSLvalue(convertRGBtoHSL(colourList[colourToUse]), false);
+        updateHEXvalue(convertRGBtoHEX(colourList[colourToUse]), false);
       }
+      
+      // Update active tile if neccessary, please note HSL and HEX values are updated with what will be the...
+      // active tile as the activeTile useState has not updated yet.
+      if (tileId === activeTile) {
+        if (tileId === colourList.length - 1) {updateHSLandHEXonDelete(activeTile - 1, activeTile - 1)}
+        if (tileId === 0) {updateHSLandHEXonDelete(0, activeTile + 1)}
+        if (tileId !== 0 && tileId !== colourList.length - 1) {updateHSLandHEXonDelete(activeTile, activeTile + 1)}
+      } else if (tileId < activeTile) {updateHSLandHEXonDelete(activeTile - 1, activeTile)}
     }
   }
 
@@ -100,7 +97,10 @@ function App() {
     if (reg.test(newHEX)) {
       setCurrentHEX(newHEX);
 
-      if (updateOtherValues) {}
+      if (updateOtherValues) {
+        updateRGBvalue(convertHEXtoRGB(newHEX), false);
+        updateHSLvalue(convertRGBtoHSL(convertHEXtoRGB(newHEX)), false);
+      }
     }
   }
 
@@ -127,6 +127,7 @@ function App() {
         activeColourType={activeColourType}
         currentRGB={colourList[activeTile]}
         currentHSL={currentHSL}
+        currentHEX={currentHEX}
         updateRGBvalue={updateRGBvalue}
         updateHSLvalue={updateHSLvalue}
         updateHEXvalue={updateHEXvalue}

@@ -7,7 +7,22 @@ function convertRGBtoHEX(RGBcode) {
     return `#${convertNumtoHEX(RGBcode.red)}${convertNumtoHEX(RGBcode.green)}${convertNumtoHEX(RGBcode.blue)}`;
 }
 
-function convertHEXtoRGB(HEXcode) {}
+function convertHEXtoRGB(HEXcode) {
+    let shorthandHEXreg = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i;
+    if (shorthandHEXreg.test(HEXcode)) {
+        let r = HEXcode.slice(1,2);
+        let g = HEXcode.slice(2,3);
+        let b = HEXcode.slice(3,4);
+        HEXcode = `#${r}${r}${g}${g}${b}${b}`;
+    }
+
+    const red = parseInt(HEXcode.slice(1, 3), 16);
+    const green = parseInt(HEXcode.slice(3, 5), 16);
+    const blue = parseInt(HEXcode.slice(5, 7), 16);
+
+    return {red, green, blue};
+}
+
 
 function convertRGBtoHSL(RGBcode) {
     let {red, green, blue} = RGBcode;

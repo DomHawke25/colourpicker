@@ -1,8 +1,9 @@
 import RGBSliders from './RGBSliders';
 import HSLSliders from './HSLSliders';
+import HEXInput from './HEXInput';
 import '../styles/colourSliders.css';
 
-function ColourSliders({activeColourType, currentRGB, currentHSL, updateRGBvalue, updateHSLvalue, updateHEXvalue}) {
+function ColourSliders({activeColourType, currentRGB, currentHSL, currentHEX, updateRGBvalue, updateHSLvalue, updateHEXvalue}) {
     if (activeColourType === "RGB") {
         return (
             <RGBSliders
@@ -21,9 +22,10 @@ function ColourSliders({activeColourType, currentRGB, currentHSL, updateRGBvalue
     }
     if (activeColourType === "HEX") {
         return (
-            <form className='colourSliders'>
-                <input type="text"></input>
-            </form>
+            <HEXInput
+                currentHEX={currentHEX}
+                updateHEXvalue={updateHEXvalue}
+            />
         )
     }
 }
